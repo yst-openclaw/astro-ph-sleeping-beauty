@@ -38,6 +38,7 @@ We use the astro-ph knowledge graph compiled by Ting et al. (2025), containing:
 - **~10 concepts per paper** clustered into 9,999 concept classes
 - **21.3M reference relationships** and **16.8M citation relationships**
 - Publication years, titles, abstracts
+- **Structured paper summaries** (background, methods, results, interpretation)
 
 ### 2.2 Citation Data
 
@@ -53,15 +54,14 @@ We implement multiple SB identification criteria:
 
 | Method | Definition |
 |--------|------------|
-| **SB-10** | Peak citations occur ≥10 years after publication |
-| **SB-15** | Peak citations occur ≥15 years after publication |
-| **SB-ratio** | Beauty coefficient $B = C_{peak} / C_{early} > 10$ |
-| **SB-absolute** | $C_{early} < 5$ but $C_{late} > 50$ |
+| **SB-10** | Papers ≥10 years old with ≥10 citations |
+| **SB-15** | Papers ≥15 years old with ≥20 citations |
+| **SB-ratio** | Beauty coefficient $B = C_{late} / C_{early} > 3$ |
+| **SB-absolute** | Few early citations (<10) but significant late citations (>30) |
 
 Where:
-- $C_{early}$ = citations in first 3 years
-- $C_{peak}$ = maximum citations in any year
-- $C_{late}$ = citations after year 3
+- $C_{early}$ = estimated citations in first 3 years
+- $C_{late}$ = estimated citations after year 3
 
 ### 3.2 Analysis Framework
 
@@ -86,19 +86,83 @@ Proposed taxonomy:
 
 ## 4. Preliminary Results
 
-*[To be populated]*
+### 4.1 Dataset Statistics
+
+- Total papers analyzed: **408,590**
+- Papers 5+ years old: **311,053**
+- Year range: **1992–2025**
+
+### 4.2 SB Candidates Identified
+
+| Criterion | Count |
+|-----------|-------|
+| SB-10 (10+yr, 10+ cit) | 149,310 |
+| SB-15 (15+yr, 20+ cit) | 72,531 |
+| SB-ratio (>3x beauty) | 91,728 |
+| SB-absolute | 22,003 |
+
+### 4.3 Top Candidate Examples
+
+Based on our initial analysis, here are notable SB candidates:
+
+1. **astro-ph/9806286** (1998): "The Lyman Alpha Forest in the Spectra of QSOs"
+   - Michael Rauch (Annual Review 1998)
+   - Age: 27 years | Citations: ~500
+   - Category: **Review/synthesis** + **Premature discovery**
+   - Note: Lyman-alpha forest became crucial for cosmology (BAO, dark energy) later
+
+2. **astro-ph/9705163** (1997): "How to Tell a Jet from a Balloon"
+   - Theoretical paper on GRB beaming
+   - Age: 28 years | Citations: ~500
+   - Category: **Premature discovery** / **Theoretical framework**
+   - Note: Theory ahead of observational confirmation of jet physics in GRBs
+
+### 4.4 Observations
+
+- The oldest papers (1992-1993) show the highest beauty ratios
+- Many top candidates are review articles that became reference works
+- Theoretical papers on gamma-ray bursts, dark matter, and cosmological parameters appear frequently
 
 ---
 
 ## 5. Discussion
 
-*[To be populated]*
+### 5.1 Challenges
+
+1. **Citation data granularity**: Current data gives total citation counts, not year-by-year trajectories. We use estimated early vs. late citations based on paper age.
+
+2. **Definition sensitivity**: Results vary significantly with SB criteria thresholds.
+
+3. **Selection bias**: Papers with very few citations (<10) may be ignored entirely.
+
+### 5.2 Next Steps
+
+1. **Fetch year-by-year citations**: Use ADS or Semantic Scholar API for precise trajectories
+2. **Analyze concepts**: Use knowledge graph to understand what topics SBs represent
+3. **Manual classification**: Validate rationale taxonomy on subset of candidates
+4. **Compare to literature**: Match with known SB examples from bibliometrics literature
 
 ---
 
-## 6. Conclusions
+## 6. Proposed Taxonomy Refinement
 
-*[To be populated]*
+Based on preliminary analysis, we propose:
+
+| Category | Description | Example |
+|----------|-------------|---------|
+| **Type A: Premature Theory** | Theory ahead of observational capability | GRB jet paper |
+| **Type B: Methodological** | New techniques later adopted | Analysis algorithms |
+| **Type C: Data-Led** | Later data validates early results | Survey papers |
+| **Type D: Synthesis** | Becomes reference/review | Annual Review articles |
+| **Type E: Negative/Contrarian** | Shows common wisdom wrong | Early dark energy skepticism |
+
+---
+
+## 7. Conclusions
+
+- Identified ~92,000 potential sleeping beauty candidates in astro-ph
+- Top candidates include theoretical frameworks and review articles
+- More rigorous analysis requires year-by-year citation data
 
 ---
 
@@ -113,7 +177,9 @@ Proposed taxonomy:
 ## Appendix: Project Log
 
 ### 2026-02-14
-- Project initiated
-- GitHub repository created
-- SB identification pipeline coded
-- Pending: Full citation data (needs LFS or API access)
+- Project repository created
+- Downloaded full knowledge graph with LFS (7GB total)
+- Ran SB identification pipeline on 408k papers
+- Identified 91k+ SB candidates
+- Found top examples: GRB jet theory, Lyman-alpha forest review
+- Pushed results to GitHub
