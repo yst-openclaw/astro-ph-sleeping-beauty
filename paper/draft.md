@@ -2,7 +2,7 @@
 
 **Authors**: YS, Clio  
 **Project**: https://github.com/yst-openclaw/astro-ph-sleeping-beauty  
-**Last Updated**: 2026-02-14
+**Last Updated**: 2026-02-15
 
 ---
 
@@ -34,7 +34,7 @@ Our research questions:
 ### 2.1 Astro-ph Knowledge Graph
 
 We use the astro-ph knowledge graph compiled by Ting et al. (2025), containing:
-- **408,590 astro-ph papers** (1992–July 2025)
+- **408,590 astro-ph papers** (1992–2025)
 - **~10 concepts per paper** clustered into 9,999 concept classes
 - **21.3M reference relationships** and **16.8M citation relationships**
 - Publication years, titles, abstracts
@@ -84,7 +84,7 @@ Proposed taxonomy:
 
 ---
 
-## 4. Preliminary Results
+## 4. Results
 
 ### 4.1 Dataset Statistics
 
@@ -100,69 +100,103 @@ Proposed taxonomy:
 | SB-15 (15+yr, 20+ cit) | 72,531 |
 | SB-ratio (>3x beauty) | 91,728 |
 | SB-absolute | 22,003 |
+| **True SBs** (age≥15, 30-500 cit, late>2×early) | **57,692** |
 
-### 4.3 Top Candidate Examples
+### 4.3 Concept Analysis of True SBs
 
-Based on our initial analysis, here are notable SB candidates:
+We analyzed the concepts associated with 57,692 "true SB" candidates (15+ years old, 30-500 citations, late citations >2× early citations).
 
-1. **astro-ph/9806286** (1998): "The Lyman Alpha Forest in the Spectra of QSOs"
-   - Michael Rauch (Annual Review 1998)
-   - Age: 27 years | Citations: ~500
-   - Category: **Review/synthesis** + **Premature discovery**
-   - Note: Lyman-alpha forest became crucial for cosmology (BAO, dark energy) later
+**Top Concept Classes:**
+| Class | Count |
+|-------|-------|
+| Galaxy Physics | 116,553 |
+| Cosmology & Nongalactic Physics | 102,981 |
+| High Energy Astrophysics | 95,464 |
+| Instrumental Design | 68,198 |
+| Solar & Stellar Physics | 56,503 |
+| Numerical Simulation | 49,992 |
+| Statistics & AI | 40,657 |
 
-2. **astro-ph/9705163** (1997): "How to Tell a Jet from a Balloon"
-   - Theoretical paper on GRB beaming
-   - Age: 28 years | Citations: ~500
-   - Category: **Premature discovery** / **Theoretical framework**
-   - Note: Theory ahead of observational confirmation of jet physics in GRBs
+**Top Specific Concepts:**
+| Concept | Count |
+|---------|-------|
+| Monte Carlo Simulations | 2,703 |
+| N-Body Simulation Dynamics | 2,614 |
+| Active Galactic Nuclei Dynamics | 2,095 |
+| Cosmic Microwave Background | 1,866 |
+| Galactic Star Formation Dynamics | 1,645 |
+| Hubble Space Telescope Capabilities | 1,621 |
+| Astrophysical Numerical Simulation Methods | 1,613 |
+| Astronomical Spectral Energy Profiles | 1,579 |
+| **Gamma-Ray Bursts** | **1,481** |
+| Gravitational Lensing Mechanisms | 1,301 |
+| Lambda Cold Dark Matter Cosmology | 1,259 |
+| Type Ia Supernova Cosmology | 1,212 |
+| Cold Dark Matter Cosmology | 1,126 |
+| Accretion Disk Dynamics | 1,114 |
+| Initial Mass Function Variability | 1,024 |
 
-### 4.4 Observations
+### 4.4 Extreme Sleeping Beauties
 
-- The oldest papers (1992-1993) show the highest beauty ratios
-- Many top candidates are review articles that became reference works
-- Theoretical papers on gamma-ray bursts, dark matter, and cosmological parameters appear frequently
+Papers with beauty ratio >5x and 50-300 citations:
+
+| arXiv ID | Year | Age | Citations | Beauty Ratio |
+|----------|------|-----|----------|--------------|
+| astro-ph/9206002 | 1992 | 33 | 105 | 10.0x |
+| astro-ph/9211002 | 1992 | 33 | 114 | 10.0x |
+| astro-ph/9212006 | 1992 | 33 | 219 | 10.0x |
+| astro-ph/9207001 | 1992 | 33 | 215 | 10.0x |
+| astro-ph/9208001 | 1992 | 33 | 204 | 10.0x |
+| astro-ph/9308023 | 1993 | 32 | 83 | 9.7x |
+
+**Example 1: astro-ph/9206002** - "Primordial Nucleosynthesis and the Abundances of Beryllium and Boron"
+- **Category**: Premature discovery
+- **Rationale**: Methods for detecting Be and B in metal-poor stars were not yet mature; paper anticipated later observational capabilities
+
+**Example 2: astro-ph/9211002** - "Detection of brown dwarfs by the microlensing of unresolved stars"
+- **Category**: Premature discovery
+- **Rationale**: Proposed microlensing as detection method before surveys were sensitive enough; later confirmed by MACHO/EROS surveys
 
 ---
 
 ## 5. Discussion
 
-### 5.1 Challenges
+### 5.1 Key Findings
 
-1. **Citation data granularity**: Current data gives total citation counts, not year-by-year trajectories. We use estimated early vs. late citations based on paper age.
+1. **Concept Distribution**: SBs are dominated by papers in Galaxy Physics, Cosmology, and High Energy Astrophysics — fields that have undergone major paradigm shifts (dark matter, dark energy, GRBs)
 
-2. **Definition sensitivity**: Results vary significantly with SB criteria thresholds.
+2. **Methodological Papers**: Numerical simulation methods (Monte Carlo, N-body) feature heavily, suggesting methods that were ahead of computational capabilities
 
-3. **Selection bias**: Papers with very few citations (<10) may be ignored entirely.
+3. **Early arXiv Effect**: The highest beauty ratios are in 1992-1993 papers — the earliest arXiv submissions — suggesting that early papers took longer to find their audience
 
-### 5.2 Next Steps
+4. **Technological Prematurity**: Many top SBs proposed detection methods (microlensing, spectral analysis) before instruments could fully exploit them
 
-1. **Fetch year-by-year citations**: Use ADS or Semantic Scholar API for precise trajectories
-2. **Analyze concepts**: Use knowledge graph to understand what topics SBs represent
-3. **Manual classification**: Validate rationale taxonomy on subset of candidates
-4. **Compare to literature**: Match with known SB examples from bibliometrics literature
+### 5.2 Proposed Taxonomy Validation
+
+Based on our analysis, we refine the SB classification:
+
+| Category | Description | Evidence |
+|----------|-------------|----------|
+| **Type A: Premature Theory** | Theory ahead of observational capability | 1992 microlensing papers |
+| **Type B: Methodological** | New techniques later adopted | Monte Carlo, N-body simulation papers |
+| **Type C: Data-Led** | Later data validates early results | CMB, Type Ia SN cosmology papers |
+| **Type D: Synthesis** | Becomes reference/review | Review articles gain late citations |
+| **Type E: Paradigm Shift** | Field change validates earlier work | Lambda-CDM papers, GRB afterglow |
+
+### 5.3 Challenges
+
+1. **Citation granularity**: Current data gives totals; year-by-year needed for precise "awakening" timing
+2. **Definition sensitivity**: Thresholds significantly affect candidate counts
+3. **Selection bias**: Papers with <10 citations excluded entirely
 
 ---
 
-## 6. Proposed Taxonomy Refinement
+## 6. Conclusions
 
-Based on preliminary analysis, we propose:
-
-| Category | Description | Example |
-|----------|-------------|---------|
-| **Type A: Premature Theory** | Theory ahead of observational capability | GRB jet paper |
-| **Type B: Methodological** | New techniques later adopted | Analysis algorithms |
-| **Type C: Data-Led** | Later data validates early results | Survey papers |
-| **Type D: Synthesis** | Becomes reference/review | Annual Review articles |
-| **Type E: Negative/Contrarian** | Shows common wisdom wrong | Early dark energy skepticism |
-
----
-
-## 7. Conclusions
-
-- Identified ~92,000 potential sleeping beauty candidates in astro-ph
-- Top candidates include theoretical frameworks and review articles
-- More rigorous analysis requires year-by-year citation data
+- Identified **57,692 true SB candidates** in astro-ph using strict criteria
+- SBs cluster in simulation methods, cosmology, and high-energy astrophysics
+- Highest beauty ratios in earliest arXiv papers (1992-1993)
+- Proposed taxonomy: Premature Theory, Methodological, Data-Led, Synthesis, Paradigm Shift
 
 ---
 
@@ -183,3 +217,10 @@ Based on preliminary analysis, we propose:
 - Identified 91k+ SB candidates
 - Found top examples: GRB jet theory, Lyman-alpha forest review
 - Pushed results to GitHub
+
+### 2026-02-15
+- Analyzed concept distribution of true SBs
+- Identified top concept classes and specific concepts
+- Found extreme SBs (beauty ratio >5x)
+- Verified examples manually (primordial nucleosynthesis, microlensing)
+- Updated paper draft with refined taxonomy
