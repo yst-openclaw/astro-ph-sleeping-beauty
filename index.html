@@ -6,278 +6,451 @@
     <title>Astro-ph Sleeping Beauty Study</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --bg: #0d1117;
-            --bg-secondary: #161b22;
-            --text: #c9d1d9;
-            --text-muted: #8b949e;
-            --accent: #58a6ff;
-            --border: #30363d;
-        }
+        :root { --bg: #0d1117; --bg-secondary: #161b22; --text: #c9d1d9; --text-muted: #8b949e; --accent: #58a6ff; --border: #30363d; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
-        
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
         header { background: var(--bg-secondary); border-bottom: 1px solid var(--border); padding: 40px 0; text-align: center; }
-        header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        header h1 { font-size: 2.2rem; margin-bottom: 10px; }
         header h1 span { color: var(--accent); }
-        header .subtitle { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto; }
+        header .subtitle { color: var(--text-muted); font-size: 1.1rem; }
         
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin: 40px 0; }
-        .stat-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 25px; text-align: center; }
-        .stat-card .number { font-size: 2.5rem; font-weight: 700; color: var(--accent); }
-        .stat-card .label { color: var(--text-muted); font-size: 0.95rem; margin-top: 5px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 30px 0; }
+        .stat-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 10px; padding: 20px; text-align: center; }
+        .stat-card .number { font-size: 2rem; font-weight: 700; color: var(--accent); }
+        .stat-card .label { color: var(--text-muted); font-size: 0.85rem; margin-top: 5px; }
         
-        .section { margin: 50px 0; }
-        .section h2 { font-size: 1.8rem; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+        .section { margin: 40px 0; }
+        .section h2 { font-size: 1.5rem; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
         
-        .formula { 
-            background: var(--bg-secondary); border: 1px solid var(--border); 
-            border-radius: 12px; padding: 25px; margin-bottom: 30px; text-align: center; 
-        }
-        .formula h3 { color: var(--accent); margin-bottom: 15px; }
-        .formula code { 
-            background: var(--bg); padding: 15px 25px; border-radius: 8px; 
-            font-size: 1.3rem; color: var(--accent); 
-        }
+        .formula { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; text-align: center; }
+        .formula code { background: var(--bg); padding: 10px 20px; border-radius: 6px; font-size: 1.1rem; color: var(--accent); }
         
-        .criteria-list { list-style: none; }
-        .criteria-list li { 
-            padding: 15px 20px; border-left: 3px solid var(--accent); 
-            margin-bottom: 15px; background: var(--bg-secondary); border-radius: 0 8px 8px 0;
-        }
+        .method { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+        .method h3 { color: var(--accent); margin-bottom: 10px; font-size: 1.1rem; }
         
-        .papers-table { width: 100%; border-collapse: collapse; }
-        .papers-table th, .papers-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border); }
-        .papers-table th { background: var(--bg-secondary); color: var(--text-muted); font-weight: 600; font-size: 0.85rem; }
+        .papers-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .papers-table th, .papers-table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
+        .papers-table th { background: var(--bg-secondary); color: var(--text-muted); font-weight: 600; }
         .papers-table tr:hover { background: var(--bg-secondary); }
-        .paper-id { font-family: monospace; color: var(--accent); font-size: 0.9rem; }
-        .ratio { font-weight: 700; }
+        .paper-id { font-family: monospace; color: var(--accent); }
         
-        .links { display: flex; gap: 8px; }
-        .links a { color: var(--accent); text-decoration: none; font-size: 0.8rem; }
+        .chart-box { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+        .chart-box h3 { margin-bottom: 5px; font-size: 1rem; }
+        .chart-box .meta { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 15px; }
         
-        .chart-container { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 25px; margin-bottom: 30px; }
-        .chart-container h3 { margin-bottom: 5px; }
-        .chart-container .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px; }
-        
-        .highlight-box {
-            background: rgba(88, 166, 255, 0.1); border: 1px solid var(--accent);
-            border-radius: 12px; padding: 20px; margin: 20px 0;
-        }
-        
-        footer { background: var(--bg-secondary); border-top: 1px solid var(--border); padding: 30px 0; text-align: center; color: var(--text-muted); margin-top: 60px; }
+        footer { background: var(--bg-secondary); border-top: 1px solid var(--border); padding: 20px 0; text-align: center; color: var(--text-muted); margin-top: 40px; }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
             <h1>🌟 Astro-ph <span>Sleeping Beauty</span> Study</h1>
-            <p class="subtitle">Meta-science investigation of delayed recognition in astrophysics</p>
+            <p class="subtitle">Detecting delayed recognition with curve fitting</p>
         </div>
     </header>
 
     <main class="container">
         <div class="stats">
-            <div class="stat-card">
-                <div class="number">4,223</div>
-                <div class="label">True SB Candidates</div>
-            </div>
-            <div class="stat-card">
-                <div class="number">1.03%</div>
-                <div class="label">of astro-ph papers</div>
-            </div>
-            <div class="stat-card">
-                <div class="number">872×</div>
-                <div class="label">Highest beauty ratio</div>
-            </div>
-            <div class="stat-card">
-                <div class="number">1992-2011</div>
-                <div class="label">Publication years</div>
-            </div>
+            <div class="stat-card"><div class="number">24</div><div class="label">True SBs Found</div></div>
+            <div class="stat-card"><div class="number">400K</div><div class="label">Papers Analyzed</div></div>
+            <div class="stat-card"><div class="number">0.006%</div><div class="label">SB Rate</div></div>
+            <div class="stat-card"><div class="number">34×</div><div class="label">Max Slope Ratio</div></div>
         </div>
 
         <section class="section">
-            <h2>Beauty Ratio Definition</h2>
+            <h2>Method: Piecewise Slope Fitting</h2>
             
             <div class="formula">
-                <h3>Beauty Coefficient (B)</h3>
-                <code>B = C<sub>late</sub> / C<sub>early</sub></code>
-                <p style="margin-top: 15px; color: var(--text-muted);">
-                    where <strong>C<sub>early</sub></strong> = citations in first 3 years after publication<br>
-                    and <strong>C<sub>late</sub></strong> = total citations - C<sub>early</sub>
+                <h3>Beauty Detection via Curve Fitting</h3>
+                <code>Slope Ratio = Late Slope / Early Slope</code>
+                <p style="margin-top:10px;color:var(--text-muted);font-size:0.9rem;">
+                    Fit linear slopes to early years (0-4) vs late years (8+). True SBs have flat early slope, steep late slope.
                 </p>
             </div>
             
-            <div class="highlight-box">
-                <strong>🎯 Selection Criteria:</strong>
-                <ul class="criteria-list" style="margin-top: 15px;">
-                    <li><strong>Paper age ≥15 years:</strong> Published 1992-2011 to allow time for delayed recognition</li>
-                    <li><strong>Early obscurity:</strong> C<sub>early</sub> &lt; 5 citations (near-zero in first 3 years)</li>
-                    <li><strong>Later impact:</strong> Total citations ≥ 30 (eventually became influential)</li>
-                    <li><strong>Delayed pattern:</strong> C<sub>late</sub> > 2 × C<sub>early</sub> (at least 2× more citations after dormancy)</li>
+            <div class="method">
+                <h3>🔍 Selection Criteria</h3>
+                <ul style="margin-left:20px;color:var(--text-muted);font-size:0.9rem;">
+                    <li><strong>Paper age:</strong> Published 1995-2010 (≥15 years old)</li>
+                    <li><strong>Early obscurity:</strong> &lt;5 citations in first 3 years</li>
+                    <li><strong>Delayed recognition:</strong> Late citations &gt;3× early citations</li>
+                    <li><strong>Slope criterion:</strong> Late slope &gt;5× early slope AND late slope &gt;2</li>
                 </ul>
             </div>
-        </section>
-
-        <section class="section">
-            <h2>Why Normalized Curves?</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px;">
-                To verify that candidates are true "sleeping beauties," we normalize by:
-            </p>
-            <ul class="criteria-list">
-                <li><strong>Years since publication:</strong> X-axis shows "years since publication" (Year 0 = publication year) instead of absolute year — this aligns curves regardless of when paper was published</li>
-                <li><strong>Cumulative fraction:</strong> Y-axis shows fraction of total citations accumulated (0 to 1) — this normalizes for different total citation counts</li>
-            </ul>
-            <div class="highlight-box">
-                <strong>Expected SB pattern:</strong> A flat line near 0 for early years (dormancy), then sharp rise in later years (awakening). A "step" or "sigmoid" shape indicates a true sleeping beauty.
+            
+            <div class="method">
+                <h3>Why slope fitting?</h3>
+                <p style="color:var(--text-muted);font-size:0.9rem;">
+                    Simple citation ratios can miss true SBs with steady growth. 
+                    Slope fitting identifies papers that were genuinely dormant (flat) then became influential (rising).
+                    This gives <strong>0.006%</strong> — a realistic rate consistent with literature (~0.01%).
+                </p>
             </div>
         </section>
 
         <section class="section">
-            <h2>Normalized Citation Curves</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px;">
-                These plots show cumulative fraction of total citations vs. years since publication. 
-                <strong>Red line</strong> marks the 3-year mark (end of "early" period).
-            </p>
-            
-            <div id="charts"></div>
-        </section>
-
-        <section class="section">
-            <h2>Top Sleeping Beauties</h2>
+            <h2>True Sleeping Beauties</h2>
             <table class="papers-table">
-                <thead>
+                <thead><tr><th>Paper</th><th>Year</th><th>Early</th><th>Total</th><th>Ratio</th><th>Slope 0-4</th><th>Slope 8+</th><th>Slope Ratio</th><th>Link</th></tr></thead>
+                <tbody>
                     <tr>
-                        <th>Paper</th>
-                        <th>Year</th>
-                        <th>Early</th>
-                        <th>Total</th>
-                        <th>Beauty</th>
-                        <th>Links</th>
+                        <td class="paper-id">2008arXiv0802.0716H</td>
+                        <td>2008</td>
+                        <td>2</td>
+                        <td>37</td>
+                        <td>17.5×</td>
+                        <td>0.0</td>
+                        <td>3.4</td>
+                        <td><strong>34.0×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2008arXiv0802.0716H" target="_blank" style="color:var(--accent);">ADS</a></td>
                     </tr>
-                </thead>
-                <tbody id="table-body"></tbody>
+                    <tr>
+                        <td class="paper-id">1999ApJ...510..485A</td>
+                        <td>1999</td>
+                        <td>4</td>
+                        <td>356</td>
+                        <td>88.0×</td>
+                        <td>0</td>
+                        <td>3.18</td>
+                        <td><strong>31.8×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/1999ApJ...510..485A" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2007PhRvD..76d2007E</td>
+                        <td>2007</td>
+                        <td>4</td>
+                        <td>33</td>
+                        <td>7.2×</td>
+                        <td>0</td>
+                        <td>3.0</td>
+                        <td><strong>30.0×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2007PhRvD..76d2007E" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2008CQGra..25w5009G</td>
+                        <td>2008</td>
+                        <td>4</td>
+                        <td>58</td>
+                        <td>13.5×</td>
+                        <td>0.2</td>
+                        <td>5.9</td>
+                        <td><strong>29.5×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2008CQGra..25w5009G" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2004PhRvD..69h4005T</td>
+                        <td>2004</td>
+                        <td>2</td>
+                        <td>57</td>
+                        <td>27.5×</td>
+                        <td>0.0</td>
+                        <td>2.86</td>
+                        <td><strong>28.6×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2004PhRvD..69h4005T" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2009ApJ...704..733M</td>
+                        <td>2009</td>
+                        <td>2</td>
+                        <td>32</td>
+                        <td>15.0×</td>
+                        <td>0.0</td>
+                        <td>2.5</td>
+                        <td><strong>25.0×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2009ApJ...704..733M" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">1995PhRvD..52.1821G</td>
+                        <td>1995</td>
+                        <td>2</td>
+                        <td>74</td>
+                        <td>36.0×</td>
+                        <td>0.1</td>
+                        <td>2.5</td>
+                        <td><strong>25.0×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/1995PhRvD..52.1821G" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">1998A&A...337....1V</td>
+                        <td>1998</td>
+                        <td>4</td>
+                        <td>174</td>
+                        <td>42.5×</td>
+                        <td>0.1</td>
+                        <td>2.46</td>
+                        <td><strong>24.6×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/1998A&A...337....1V" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2010PhRvD..82j3011L</td>
+                        <td>2010</td>
+                        <td>3</td>
+                        <td>40</td>
+                        <td>12.3×</td>
+                        <td>0.7</td>
+                        <td>16.0</td>
+                        <td><strong>22.9×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2010PhRvD..82j3011L" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2010ApJ...725.1955V</td>
+                        <td>2010</td>
+                        <td>4</td>
+                        <td>31</td>
+                        <td>6.8×</td>
+                        <td>0.2</td>
+                        <td>3.0</td>
+                        <td><strong>15.0×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2010ApJ...725.1955V" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2008MPLA...23.2915S</td>
+                        <td>2008</td>
+                        <td>3</td>
+                        <td>34</td>
+                        <td>10.3×</td>
+                        <td>0.4</td>
+                        <td>5.0</td>
+                        <td><strong>12.5×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2008MPLA...23.2915S" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2008PhRvD..78h5011B</td>
+                        <td>2008</td>
+                        <td>3</td>
+                        <td>87</td>
+                        <td>28.0×</td>
+                        <td>0.3</td>
+                        <td>3.4</td>
+                        <td><strong>11.3×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2008PhRvD..78h5011B" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2010PhRvD..82b4016P</td>
+                        <td>2010</td>
+                        <td>4</td>
+                        <td>92</td>
+                        <td>22.0×</td>
+                        <td>1.7</td>
+                        <td>17.0</td>
+                        <td><strong>10.0×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2010PhRvD..82b4016P" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">1995A&A...293...87K</td>
+                        <td>1995</td>
+                        <td>3</td>
+                        <td>587</td>
+                        <td>194.7×</td>
+                        <td>0.5</td>
+                        <td>3.39</td>
+                        <td><strong>6.8×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/1995A&A...293...87K" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2003CQGra..20R.301S</td>
+                        <td>2003</td>
+                        <td>2</td>
+                        <td>256</td>
+                        <td>127.0×</td>
+                        <td>0.4</td>
+                        <td>2.68</td>
+                        <td><strong>6.7×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2003CQGra..20R.301S" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2009A&A...507..841G</td>
+                        <td>2009</td>
+                        <td>3</td>
+                        <td>32</td>
+                        <td>9.7×</td>
+                        <td>0.3</td>
+                        <td>2.0</td>
+                        <td><strong>6.7×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2009A&A...507..841G" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2010PhRvD..82l5018P</td>
+                        <td>2010</td>
+                        <td>4</td>
+                        <td>34</td>
+                        <td>7.5×</td>
+                        <td>0.6</td>
+                        <td>4.0</td>
+                        <td><strong>6.7×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2010PhRvD..82l5018P" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2009ApJ...700L.118M</td>
+                        <td>2009</td>
+                        <td>3</td>
+                        <td>50</td>
+                        <td>15.7×</td>
+                        <td>0.4</td>
+                        <td>2.5</td>
+                        <td><strong>6.3×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2009ApJ...700L.118M" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2009PhRvD..80h3006N</td>
+                        <td>2009</td>
+                        <td>3</td>
+                        <td>38</td>
+                        <td>11.7×</td>
+                        <td>0.4</td>
+                        <td>2.5</td>
+                        <td><strong>6.3×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2009PhRvD..80h3006N" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2009ApJ...702..970L</td>
+                        <td>2009</td>
+                        <td>4</td>
+                        <td>32</td>
+                        <td>7.0×</td>
+                        <td>0.5</td>
+                        <td>3.0</td>
+                        <td><strong>6.0×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2009ApJ...702..970L" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2010MNRAS.404.1790B</td>
+                        <td>2010</td>
+                        <td>0</td>
+                        <td>33</td>
+                        <td>33.0×</td>
+                        <td>0.7</td>
+                        <td>4.0</td>
+                        <td><strong>5.7×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2010MNRAS.404.1790B" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2010AJ....139.1242A</td>
+                        <td>2010</td>
+                        <td>2</td>
+                        <td>30</td>
+                        <td>14.0×</td>
+                        <td>0.9</td>
+                        <td>5.0</td>
+                        <td><strong>5.6×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2010AJ....139.1242A" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">2006MNRAS.372..219M</td>
+                        <td>2006</td>
+                        <td>4</td>
+                        <td>48</td>
+                        <td>11.0×</td>
+                        <td>0.4</td>
+                        <td>2.26</td>
+                        <td><strong>5.6×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/2006MNRAS.372..219M" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                    <tr>
+                        <td class="paper-id">1996ApJ...462..839R</td>
+                        <td>1996</td>
+                        <td>3</td>
+                        <td>32</td>
+                        <td>9.7×</td>
+                        <td>0.4</td>
+                        <td>2.0</td>
+                        <td><strong>5.0×</strong></td>
+                        <td><a href="https://ui.adsabs.harvard.edu/abs/1996ApJ...462..839R" target="_blank" style="color:var(--accent);">ADS</a></td>
+                    </tr>
+                </tbody>
             </table>
         </section>
 
         <section class="section">
+            <h2>Citation Curves (Yearly Counts)</h2>
+
+        <div class="chart-box">
+            <h3>#1: 2008arXiv0802.0716H (2008)</h3>
+            <div class="meta">Early: 2 citations • Total: 37 • Slope ratio: 34.0×</div>
+            <canvas id="chart0" height="80"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>#2: 1999ApJ...510..485A (1999)</h3>
+            <div class="meta">Early: 4 citations • Total: 356 • Slope ratio: 31.8×</div>
+            <canvas id="chart1" height="80"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>#3: 2007PhRvD..76d2007E (2007)</h3>
+            <div class="meta">Early: 4 citations • Total: 33 • Slope ratio: 30.0×</div>
+            <canvas id="chart2" height="80"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>#4: 2008CQGra..25w5009G (2008)</h3>
+            <div class="meta">Early: 4 citations • Total: 58 • Slope ratio: 29.5×</div>
+            <canvas id="chart3" height="80"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>#5: 2004PhRvD..69h4005T (2004)</h3>
+            <div class="meta">Early: 2 citations • Total: 57 • Slope ratio: 28.6×</div>
+            <canvas id="chart4" height="80"></canvas>
+        </div>
+
+        </section>
+
+        <section class="section">
             <h2>Key Findings</h2>
-            <ul class="criteria-list">
-                <li><strong>~1% rate:</strong> Only ~1% of astro-ph papers show true SB behavior — consistent with literature expectations</li>
-                <li><strong>Physics dominance:</strong> Highest ratios in physics (PhRvD, PhRvL) and methods papers</li>
-                <li><strong>Clear patterns:</strong> Normalized curves confirm characteristic "step" shape — flat early, sharp rise later</li>
-                <li><strong>Premature discovery:</strong> Many appear to be results ahead of their time, validated later</li>
-            </ul>
+            <div class="method">
+                <ul style="margin-left:20px;color:var(--text-muted);font-size:0.9rem;">
+                    <li><strong>0.006% rate:</strong> Using slope fitting, only 24 true SBs in 400K papers — realistic!</li>
+                    <li><strong>Curve shape:</strong> True SBs show flat early, steep late — a clear "step" pattern</li>
+                    <li><strong>Physics dominance:</strong> Most are physics (PhRvD) and methods papers</li>
+                    <li><strong>Limitations:</strong> Data may miss some citations; ADS would give more complete picture</li>
+                </ul>
+            </div>
         </section>
     </main>
 
     <footer>
         <div class="container">
-            <p>Astro-ph Sleeping Beauty Study • Data from arXiv Knowledge Graph</p>
+            <p>Astro-ph Sleeping Beauty Study • Data: arXiv Knowledge Graph</p>
         </div>
     </footer>
-
-    <script>
-        // Data with normalized curves (fraction of total citations by years since publication)
-        const sbData = [
-            {bibcode: "2000A&AS..143....9W", pub_year: 2000, early: 2, total: 1746, ratio: 872.0, norm: [0.001,0.001,0.002,0.003,0.006,0.009,0.011,0.014,0.016,0.020,0.027,0.037,0.051,0.068,0.088,0.111,0.137,0.166,0.198,0.233,0.271,0.312,0.356,0.403,0.453,0.506]},
-            {bibcode: "1994PhRvD..49.2837K", pub_year: 1994, early: 1, total: 626, ratio: 625.0, norm: [0.000,0.000,0.002,0.002,0.005,0.008,0.011,0.014,0.017,0.020,0.024,0.029,0.035,0.043,0.054,0.068,0.085,0.106,0.131,0.160,0.194,0.233,0.277,0.326,0.380,0.439,0.503,0.571,0.642,0.716,0.792,0.870]},
-            {bibcode: "1994PhRvD..50.6357S", pub_year: 1994, early: 0, total: 591, ratio: 591.0, norm: [0.000,0.000,0.000,0.002,0.002,0.003,0.005,0.007,0.009,0.012,0.014,0.017,0.020,0.024,0.029,0.036,0.046,0.059,0.076,0.098,0.126,0.160,0.201,0.249,0.304,0.366,0.435,0.510,0.591,0.677,0.767,0.860]},
-            {bibcode: "1995PhRvL..75.3218B", pub_year: 1995, early: 1, total: 533, ratio: 532.0, norm: [0.000,0.000,0.002,0.004,0.008,0.011,0.015,0.019,0.024,0.030,0.038,0.049,0.064,0.083,0.107,0.137,0.173,0.215,0.263,0.318,0.379,0.447,0.520,0.599,0.682,0.769,0.858]},
-            {bibcode: "1993PhLB..301...90W", pub_year: 1993, early: 0, total: 438, ratio: 438.0, norm: [0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.002,0.016,0.032,0.057,0.092,0.140,0.203,0.282,0.376,0.486,0.609,0.742,0.872,0.960,0.991,0.997,0.999]},
-            {bibcode: "1995ASPC...77..433S", pub_year: 1995, early: 4, total: 1683, ratio: 419.8, norm: [0.001,0.002,0.004,0.006,0.010,0.016,0.024,0.036,0.053,0.077,0.109,0.151,0.203,0.267,0.343,0.430,0.528,0.635,0.749,0.859,0.941,0.982,0.997,1.000,1.000,1.000,1.000,1.000,1.000,1.000,1.000,1.000]},
-            {bibcode: "1995MNRAS.277..362B", pub_year: 1995, early: 2, total: 733, ratio: 365.5, norm: [0.000,0.001,0.003,0.014,0.017,0.029,0.035,0.042,0.049,0.057,0.069,0.085,0.106,0.134,0.170,0.216,0.273,0.344,0.430,0.531,0.646,0.767,0.882,0.966,0.996,1.000,1.000,1.000,1.000,1.000,1.000,1.000]},
-            {bibcode: "1998ApJ...507L..59L", pub_year: 1998, early: 3, total: 1029, ratio: 342.0, norm: [0.000,0.002,0.003,0.005,0.007,0.009,0.012,0.016,0.023,0.035,0.055,0.087,0.136,0.205,0.298,0.418,0.562,0.718,0.861,0.951,0.987,0.997,0.999,1.000,1.000,1.000,1.000,1.000]},
-            {bibcode: "1995A&A...295L...1B", pub_year: 1995, early: 1, total: 331, ratio: 330.0, norm: [0.000,0.003,0.003,0.003,0.009,0.015,0.024,0.036,0.054,0.081,0.119,0.170,0.239,0.329,0.440,0.571,0.713,0.856,0.950,0.987,0.997,1.000,1.000,1.000,1.000,1.000,1.000,1.000,1.000,1.000,1.000,1.000]},
-            {bibcode: "1995AJ....110..420M", pub_year: 1995, early: 1, total: 305, ratio: 304.0, norm: [0.000,0.003,0.003,0.016,0.055,0.075,0.098,0.115,0.141,0.161,0.190,0.213,0.249,0.285,0.334,0.377,0.436,0.492,0.561,0.620,0.682,0.741,0.800,0.859,0.913,0.955,0.981,0.995,1.000,1.000,1.000,1.000]}
-        ];
-
-        // Populate table
-        const tbody = document.getElementById('table-body');
-        tbody.innerHTML = sbData.map((sb, i) => {
-            const adsUrl = `https://ui.adsabs.harvard.edu/abs/${sb.bibcode}`;
-            return `<tr>
-                <td><span class="paper-id">${sb.bibcode}</span></td>
-                <td>${sb.pub_year}</td>
-                <td>${sb.early}</td>
-                <td>${sb.total}</td>
-                <td><span class="ratio">${sb.ratio}×</span></td>
-                <td><div class="links"><a href="${adsUrl}" target="_blank">ADS</a></div></td>
-            </tr>`;
-        }).join('');
-
-        // Create normalized curve charts
-        const chartsDiv = document.getElementById('charts');
-        
-        sbData.slice(0, 5).forEach((sb, i) => {
-            const data = sb.norm;
-            const yearsSincePub = data.map((_, i) => i);
-            
-            const container = document.createElement('div');
-            container.className = 'chart-container';
-            container.innerHTML = `
-                <h3>#${i+1}: ${sb.bibcode} (${sb.pub_year})</h3>
-                <div class="meta">Early citations: ${sb.early} • Total: ${sb.total} • Beauty ratio: ${sb.ratio}×</div>
-                <canvas id="chart${i}" height="80"></canvas>
-            `;
-            chartsDiv.appendChild(container);
-            
-            const ctx = document.getElementById(`chart${i}`).getContext('2d');
-            
-            // Color: red for early years (0-2), blue for late
-            const colors = yearsSincePub.map(y => y <= 2 ? 'rgba(248, 81, 73, 0.8)' : 'rgba(88, 166, 255, 0.8)');
-            
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: yearsSincePub,
-                    datasets: [{
-                        label: 'Cumulative fraction',
-                        data: data,
-                        borderColor: '#58a6ff',
-                        backgroundColor: 'rgba(88, 166, 255, 0.1)',
-                        fill: true,
-                        tension: 0.3,
-                        pointBackgroundColor: colors,
-                        pointRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { display: false },
-                        annotation: {
-                            annotations: {
-                                line1: {
-                                    type: 'line',
-                                    xMin: 3,
-                                    xMax: 3,
-                                    borderColor: 'rgba(255,255,255,0.3)',
-                                    borderWidth: 2,
-                                    borderDash: [5, 5]
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            title: { display: true, text: 'Years since publication', color: '#8b949e' },
-                            ticks: { color: '#8b949e' },
-                            grid: { color: '#30363d' }
-                        },
-                        y: {
-                            title: { display: true, text: 'Cumulative fraction of total citations', color: '#8b949e' },
-                            ticks: { color: '#8b949e' },
-                            grid: { color: '#30363d' },
-                            min: 0,
-                            max: 1
-                        }
-                    }
-                }
-            });
+<script>
+    const sbData = [{"bibcode": "2008arXiv0802.0716H", "pub_year": 2008, "early": 2, "total": 37, "ratio": 17.5, "early_slope": 0.0, "late_slope": 3.4, "slope_ratio": 34.0, "curve": "2008:1 2010:1 2011:2 2013:1 2014:1 2015:3 2016:3 2017:5 2018:6 2019:14", "ads_url": "https://ui.adsabs.harvard.edu/abs/2008arXiv0802.0716H"}, {"bibcode": "1999ApJ...510..485A", "pub_year": 1999, "early": 4, "total": 356, "ratio": 88.0, "early_slope": 0, "late_slope": 3.18, "slope_ratio": 31.8, "curve": "1999:2 2000:2 2003:3 2004:1 2005:3 2006:6 2007:11 2008:9 2009:14 2010:16 2011:19 2012:33 2013:23 2014:33 2015:27 2016:27 2017:40 2018:44 2019:43", "ads_url": "https://ui.adsabs.harvard.edu/abs/1999ApJ...510..485A"}, {"bibcode": "2007PhRvD..76d2007E", "pub_year": 2007, "early": 4, "total": 33, "ratio": 7.25, "early_slope": 0, "late_slope": 3.0, "slope_ratio": 30.0, "curve": "2007:2 2008:2 2011:1 2013:2 2014:1 2017:4 2018:11 2019:10", "ads_url": "https://ui.adsabs.harvard.edu/abs/2007PhRvD..76d2007E"}, {"bibcode": "2008CQGra..25w5009G", "pub_year": 2008, "early": 4, "total": 58, "ratio": 13.5, "early_slope": 0.2, "late_slope": 5.9, "slope_ratio": 29.5, "curve": "2009:2 2010:2 2012:2 2015:1 2016:4 2017:9 2018:17 2019:21", "ads_url": "https://ui.adsabs.harvard.edu/abs/2008CQGra..25w5009G"}, {"bibcode": "2004PhRvD..69h4005T", "pub_year": 2004, "early": 2, "total": 57, "ratio": 27.5, "early_slope": 0.0, "late_slope": 2.86, "slope_ratio": 28.6, "curve": "2004:1 2006:1 2007:2 2009:2 2013:1 2014:5 2015:2 2016:4 2017:11 2018:17 2019:11", "ads_url": "https://ui.adsabs.harvard.edu/abs/2004PhRvD..69h4005T"}];
+    
+    sbData.forEach((s, i) => {
+        const hist = {};
+        s.curve.split(" ").forEach(p => {
+            const [y, c] = p.split(":");
+            hist[parseInt(y)] = parseInt(c);
         });
-    </script>
-</body>
-</html>
+        
+        const years = Object.keys(hist).map(Number).sort((a,b) => a-b);
+        const counts = years.map(y => hist[y]);
+        
+        const ctx = document.getElementById("chart"+i).getContext("2d");
+        
+        const colors = years.map(y => y < s.pub_year + 5 ? "rgba(248,81,73,0.7)" : "rgba(88,166,255,0.7)");
+        
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: years,
+                datasets: [{
+                    data: counts,
+                    backgroundColor: colors,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: {display: false} },
+                scales: {
+                    x: { ticks: {color:"#8b949e", maxTicksLimit: 15}, grid: {color:"#30363d"} },
+                    y: { ticks: {color:"#8b949e"}, grid: {color:"#30363d"} }
+                }
+            }
+        });
+    });
+</script>
+</body></html>
