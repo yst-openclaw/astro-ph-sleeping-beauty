@@ -66,12 +66,14 @@ Proposed taxonomy:
 ## Current Status
 
 - [x] Project repository created
-- [ ] Pull full knowledge graph data (needs LFS)
-- [ ] Define SB criteria and compute metrics
-- [ ] Identify candidate SBs
-- [ ] Analyze by concepts/topics
-- [ ] Classify by rationale
-- [ ] Visualize results
+- [x] Knowledge graph data loaded
+- [x] SB identification criteria defined and applied
+- [x] **57,692 true SB candidates identified** (SB-10 criterion: peak ≥10 years after publication)
+- [ ] Year-by-year citation data (need ADS API)
+- [ ] Manual classification of examples
+- [ ] Awakening year analysis
+- [ ] Visualizations
+- [ ] Paper draft
 
 ## Team
 
