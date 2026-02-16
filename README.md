@@ -17,63 +17,53 @@ A sleeping beauty (SB) is a paper whose importance is not recognized until years
 
 ## Methodology
 
-### Part A: Identifying Sleeping Beauties
+### Naive Approach (Initial)
 
-**Proposed definitions (to be tested):**
-- `SB-10`: Peak citations occur ≥10 years after publication
-- `SB-15`: Peak citations occur ≥15 years after publication  
-- `SB-citation-ratio`: Total citations now / citations in first 3 years > X
-- `SB-absolute`: Few early citations (<5) but high later citations (>50)
+Simple citation ratio thresholds gave inflated results (~1% of papers), which is unrealistically high compared to literature estimates (~0.01%).
 
-**Metrics to compute:**
-- Citation trajectory over time for each paper
-- Time to citation peak (Tp)
-- "Beauty coefficient" B = Cp / Ce (peak / early citations)
-- Awakening year
+### Refined Approach: Piecewise Slope Fitting
 
-### Part B: Understanding Why
+We fit linear slopes to early (0-4 years) vs late (8+ years) citation trajectories:
 
-Using the knowledge graph concepts to analyze:
-- Field/subfield of paper
-- Topic novelty (concept uniqueness)
-- Cross-field connections
-- Methodological innovation vs. empirical discovery
-- Theoretical vs. observational
+**Criteria for true SB:**
+- Early citations (years 0-4): < 5 total
+- Late citations > 3× early citations  
+- Late slope > 5× early slope
 
-### Part C: Grouping by Rationale
+This identifies papers with **flat early curves** that transition to **steep late growth** — the hallmark of true sleeping beauties.
 
-Proposed taxonomy:
-1. **Premature discovery**: Results ahead of their time, validated later by new observations/instruments
-2. **Methodological innovation**: New analysis techniques that became standard
-3. **Data release**: Papers accompanying major data releases
-4. **Theoretical framework**: Foundational theory papers
-5. **Observational discovery**: Serendipitous findings confirmed later
-6. **Negative results**: Papers showing something doesn't work
-7. **Review/synthesis**: Consolidating works that became references
+## Results
 
-## Data Sources
+- **Dataset**: ~400,000 astro-ph papers
+- **True SB candidates**: 24 papers (0.006%)
+- **Max slope ratio**: 34× (2008arXiv0802.0716H)
+- **Expected rate**: ~0.01% (literature benchmark) ✓
 
-1. **Primary**: Astro-ph Knowledge Graph (Yuan-Sen Ting)
-   - Citation network
-   - Paper metadata (year, title, abstract)
-   - Extracted concepts
-   
-2. **Alternative**: 
-   - Semantic Scholar API
-   - NASA ADS API
-   - arXiv + InspireHEP crosslinks
+**Key Finding**: Simple citation ratio methods overestimate SB prevalence by ~100×. Slope fitting is essential for clean identification.
 
-## Current Status
+## Outputs
 
-- [x] Project repository created
-- [x] Knowledge graph data loaded
-- [x] SB identification criteria defined and applied
-- [x] **57,692 true SB candidates identified** (SB-10 criterion: peak ≥10 years after publication)
-- [ ] Year-by-year citation data (need ADS API)
-- [ ] Manual classification of examples
-- [ ] Awakening year analysis
-- [ ] Visualizations
-- [ ] Paper draft
+| File | Description |
+|------|-------------|
+| `sb_final.json` | 24 true SB candidates with citation curves |
+| `sb_curves.json` | Full citation trajectory data |
+| `paper/draft.md` | Manuscript draft |
+| `index.html` | Interactive visualization (GitHub Pages) |
+
+**Live Dashboard**: https://yst-openclaw.github.io/astro-ph-sleeping-beauty/
+
+## Next Steps
+
+1. [ ] Obtain ADS data for more complete citation records
+2. [ ] Manual classification by awakening reason
+3. [ ] Compare with known famous SBs in literature
+4. [ ] Analyze correlation with paper characteristics (field, novelty, etc.)
+
+## Data Limitations
+
+- arXiv citation data may miss citations from non-arXiv sources
+- ADS API would provide more complete coverage
+- Early career papers (2015+) may not have had time to "awaken"
 
 ## Team
 
