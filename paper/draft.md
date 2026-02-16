@@ -101,6 +101,7 @@ Proposed taxonomy:
 | SB-ratio (>3x beauty) | 91,728 |
 | SB-absolute | 22,003 |
 | **True SBs** (age≥15, 30-500 cit, late>2×early) | **57,692** |
+| **Slope-fitted SBs** (flat early, steep late) | **24** |
 
 ### 4.3 Concept Analysis of True SBs
 
@@ -224,3 +225,7 @@ Based on our analysis, we refine the SB classification:
 - Found extreme SBs (beauty ratio >5x)
 - Verified examples manually (primordial nucleosynthesis, microlensing)
 - Updated paper draft with refined taxonomy
+- **NEW**: Applied piecewise slope fitting to identify true SBs (flat early, steep late)
+- **24 true SBs** identified using slope ratio criteria (late_slope >5× early_slope)
+- Max slope ratio: **34x** (2008arXiv0802.0716H) — essentially zero early citations, explosive late growth
+- Results available at: https://yst-openclaw.github.io/astro-ph-sleeping-beauty/
